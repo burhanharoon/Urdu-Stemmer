@@ -9,7 +9,11 @@ import re
 # print(checkWords('وں', 'علاقوں', 'suffix'))
 # print(checkWords('دار', 'ایماندار'))
 
-urduWord = 'علاقوں'
-x = re.search("وں\Z", urduWord)
-if x:
-    print(urduWord[:x.span(0)[0]])
+urduPrefixes = ['بے', 'بد', 'لا', 'ے', 'نا', 'با', 'کم']
+urduSuffixes = ['دار', 'وں', 'یاں', 'یں', 'ات', 'گوار']
+urduWord = 'لاجواب'
+checkPrefix = re.search('\Aلا', urduWord)
+# checkSuffix = re.search("وں\Z", urduWord)
+if checkPrefix:
+    # print(urduWord[:checkSuffix.span(0)[0]])
+    print(urduWord[checkPrefix.span(0)[1]:])
