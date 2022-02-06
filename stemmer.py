@@ -9,11 +9,21 @@ import re
 # print(checkWords('وں', 'علاقوں', 'suffix'))
 # print(checkWords('دار', 'ایماندار'))
 
-urduPrefixes = ['بے', 'بد', 'لا', 'ے', 'نا', 'با', 'کم']
+allUrduAffixes = {}
+
+urduPrefixes = ['بے', 'بد', 'لا', 'ے', 'نا', 'با', 'کم', 'ان', 'اہل', 'کم']
 urduSuffixes = ['دار', 'وں', 'یاں', 'یں', 'ات', 'گوار']
-urduWord = 'لاجواب'
-checkPrefix = re.search('\Aلا', urduWord)
-# checkSuffix = re.search("وں\Z", urduWord)
-if checkPrefix:
-    # print(urduWord[:checkSuffix.span(0)[0]])
-    print(urduWord[checkPrefix.span(0)[1]:])
+
+urduFile = open("urdu-affixes.txt", "r", encoding="utf-8")
+for urduWord in urduFile:
+    x = urduWord.splitlines()
+    x = x[0].split('\t\t')
+    allUrduAffixes[x[0]] = x[1]
+
+
+urduWord = 'ایماندار'
+# checkPrefix = re.search('\Aلا', urduWord)
+checkSuffix = re.search("دار\Z", urduWord)
+if checkSuffix:
+    print(urduWord[:checkSuffix.span(0)[0]])
+    # print(urduWord[checkPrefix.span(0)[1]:])
