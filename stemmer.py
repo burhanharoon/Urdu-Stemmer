@@ -1,6 +1,7 @@
 import re
 
 allUrduAffixes = {}
+wrongGuessedStem = {}
 totalWords = 0
 totalCorrectGuessed = 0
 
@@ -12,11 +13,13 @@ def remove(string):
     return string.replace(" ", "")
 
 
+#
 urduFile = open("urdu-affixes.txt", "r", encoding="utf-8")
 for urduWord in urduFile:
     totalWords = totalWords + 1
     x = urduWord.splitlines()
     x = x[0].split('\t\t')
+    # Adding real word and its real stem in allUrduAffixes dictionary
     allUrduAffixes[x[0]] = x[1]
 
 for sentence in allUrduAffixes:
@@ -27,14 +30,17 @@ for sentence in allUrduAffixes:
         checkPrefix = re.search(rf'\A{prefix}', urduWord)
         if checkPrefix:
             predictedStem = urduWord[checkPrefix.span(0)[1]:]
-            # print(predictedStem)
             prefixFound = True
             realStem = remove(allUrduAffixes[sentence])
             predictedStem = remove(predictedStem)
             if predictedStem == realStem:
                 totalCorrectGuessed = totalCorrectGuessed + 1
-            # else:
-            #     print(realStem, predictedStem)
+            else:
+                temp = {
+                    "realStem": realStem,
+                    "predictedStem": predictedStem,
+                }
+                wrongGuessedStem[urduWord] = temp
             break
 
     if not prefixFound:
@@ -47,9 +53,14 @@ for sentence in allUrduAffixes:
                 predictedStem = remove(predictedStem)
                 if predictedStem == realStem:
                     totalCorrectGuessed = totalCorrectGuessed + 1
-                # else:
-                #     print(realStem, predictedStem)
+                else:
+                    temp = {
+                        "realStem": realStem,
+                        "predictedStem": predictedStem,
+                    }
+                    wrongGuessedStem[urduWord] = temp
                 break
 
-print(totalWords)
-print(totalCorrectGuessed)
+print("Total num of words: ", totalWords)
+print("Total num of words correctly predicted: ", totalCorrectGuessed)
+print("Wrong Words List: ", wrongGuessedStem)
