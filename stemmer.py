@@ -13,7 +13,6 @@ def remove(string):
     return string.replace(" ", "")
 
 
-#
 urduFile = open("urdu-affixes.txt", "r", encoding="utf-8")
 for urduWord in urduFile:
     totalWords = totalWords + 1
@@ -25,30 +24,24 @@ for urduWord in urduFile:
 for sentence in allUrduAffixes:
     urduWord = sentence
     prefixFound = False
+    foundBothPrefixSuffix = False
 
-    for prefix in urduPrefixes:
-        checkPrefix = re.search(rf'\A{prefix}', urduWord)
-        if checkPrefix:
-            predictedStem = urduWord[checkPrefix.span(0)[1]:]
-            prefixFound = True
-            realStem = remove(allUrduAffixes[sentence])
-            predictedStem = remove(predictedStem)
-            if predictedStem == realStem:
-                totalCorrectGuessed = totalCorrectGuessed + 1
-            else:
-                temp = {
-                    "realStem": realStem,
-                    "predictedStem": predictedStem,
-                }
-                wrongGuessedStem[urduWord] = temp
-            break
+    # Checks if both prefix and suffix are present in a word
+    # neglected because it is decreasing the fitness very much
+    # for prefix in urduPrefixes:
+    #     for suffix in urduSuffixes:
+    #         checkPrefix = re.search(rf'\A{prefix}', urduWord)
+    #         checkSuffix = re.search(rf"{suffix}\Z", urduWord)
+    #         if checkPrefix and checkSuffix:
+    #             foundBothPrefixSuffix = True
+    #             print(checkPrefix,checkSuffix)
 
-    if not prefixFound:
-        for suffix in urduSuffixes:
-            checkSuffix = re.search(rf"{suffix}\Z", urduWord)
-            if checkSuffix:
-                predictedStem = urduWord[:checkSuffix.span(0)[0]]
-                # print(predictedStem)
+    if not foundBothPrefixSuffix:
+        for prefix in urduPrefixes:
+            checkPrefix = re.search(rf'\A{prefix}', urduWord)
+            if checkPrefix:
+                predictedStem = urduWord[checkPrefix.span(0)[1]:]
+                prefixFound = True
                 realStem = remove(allUrduAffixes[sentence])
                 predictedStem = remove(predictedStem)
                 if predictedStem == realStem:
@@ -61,6 +54,25 @@ for sentence in allUrduAffixes:
                     wrongGuessedStem[urduWord] = temp
                 break
 
+        if not prefixFound:
+            for suffix in urduSuffixes:
+                checkSuffix = re.search(rf"{suffix}\Z", urduWord)
+                if checkSuffix:
+                    predictedStem = urduWord[:checkSuffix.span(0)[0]]
+                    # print(predictedStem)
+                    realStem = remove(allUrduAffixes[sentence])
+                    predictedStem = remove(predictedStem)
+                    if predictedStem == realStem:
+                        totalCorrectGuessed = totalCorrectGuessed + 1
+                    else:
+                        temp = {
+                            "realStem": realStem,
+                            "predictedStem": predictedStem,
+                        }
+                        wrongGuessedStem[urduWord] = temp
+                    break
+
 print("Total num of words: ", totalWords)
 print("Total num of words correctly predicted: ", totalCorrectGuessed)
 print("Wrong Words List: ", wrongGuessedStem)
+print("Fitness Percentage: ", totalCorrectGuessed / totalWords * 100)
