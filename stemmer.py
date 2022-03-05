@@ -8,11 +8,11 @@ totalCorrectGuessed = 0
 urduPrefixes = ['بے', 'بد', 'لا', 'ے', 'نا', 'با', 'کم', 'ان', 'اہل', 'کم']
 urduSuffixes = ['دار', 'وں', 'یاں', 'یں', 'ات', 'گوار', 'ور', 'پسند']
 
-
+# Removes space form a urdu word 
 def remove(string):
     return string.replace(" ", "")
 
-
+# Opening the file which contains all urdu words and their respective stems
 urduFile = open("urdu-affixes.txt", "r", encoding="utf-8")
 for urduWord in urduFile:
     totalWords = totalWords + 1
@@ -25,9 +25,10 @@ for sentence in allUrduAffixes:
     urduWord = sentence
     prefixFound = False
     foundBothPrefixSuffix = False
-
+    
     # Checks if both prefix and suffix are present in a word
-    # neglected because it is decreasing the fitness very much
+    # But right now it's out of this program's scope
+    # Feel free to use in your projects if required!
     # for prefix in urduPrefixes:
     #     for suffix in urduSuffixes:
     #         checkPrefix = re.search(rf'\A{prefix}', urduWord)
