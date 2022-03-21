@@ -25,17 +25,7 @@ for sentence in allUrduAffixes:
     urduWord = sentence
     prefixFound = False
     foundBothPrefixSuffix = False
-    
-    # Checks if both prefix and suffix are present in a word
-    # But right now it's out of this program's scope
-    # Feel free to use in your projects if required!
-    # for prefix in urduPrefixes:
-    #     for suffix in urduSuffixes:
-    #         checkPrefix = re.search(rf'\A{prefix}', urduWord)
-    #         checkSuffix = re.search(rf"{suffix}\Z", urduWord)
-    #         if checkPrefix and checkSuffix:
-    #             foundBothPrefixSuffix = True
-    #             print(checkPrefix,checkSuffix)
+    print(checkPrefix,checkSuffix)
 
     if not foundBothPrefixSuffix:
         for prefix in urduPrefixes:
